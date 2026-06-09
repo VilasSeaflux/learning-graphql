@@ -1,5 +1,10 @@
 import { BaseContext, GraphQLFieldResolverParams } from "@apollo/server";
-import { ExecutionArgs, GraphQLTypeResolver } from "graphql";
+import {
+  ExecutionArgs,
+  GraphQLErrorOptions,
+  GraphQLFormattedErrorExtensions,
+  GraphQLTypeResolver,
+} from "graphql";
 import { Resolvers } from "./types";
 
 export const resolvers: Resolvers = {
@@ -11,6 +16,26 @@ export const resolvers: Resolvers = {
     },
     track: (_, { id }, { dataSources }) => {
       return dataSources.trackAPI.getTrack(id);
+    },
+  },
+  Mutation: {
+    incrementTrackViews: async (_, { id }, { dataSources }) => {
+      try {
+        const track = await dataSources.trackAPI.incrementTrackViews(id);
+        return {
+          code: 200,
+          success: true,
+          message: `Successfully incremented number of views for track ${id}`,
+          track,
+        };
+      } catch (err: any) {
+        return {
+          code: err.extensions.response.status,
+          success: false,
+          message: err.extensions.response.body,
+          track: null,
+        };
+      }
     },
   },
   Track: {
