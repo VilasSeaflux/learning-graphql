@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Tracks from "./tracks";
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 import { ApolloProvider } from "@apollo/client/react";
+import Track from "./track";
 
 const client = new ApolloClient({
   link: new HttpLink({ uri: "http://localhost:4000" }),
@@ -15,6 +16,7 @@ export default function Pages() {
       <BrowserRouter>
         <Routes>
           <Route element={<Tracks />} path="/" />
+          <Route element={<Track />} path="/track/:trackId" />
         </Routes>
       </BrowserRouter>
     </ApolloProvider>

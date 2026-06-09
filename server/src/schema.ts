@@ -2,7 +2,8 @@ import gql from "graphql-tag";
 
 const typeDef = gql`
   type Query {
-    tracksForHome: [Track]
+    tracksForHome: [Track!]!
+    track(id: ID!): Track
   }
 
   "A track is a group of Modules that teaches about a specific topic"
@@ -13,6 +14,9 @@ const typeDef = gql`
     thumbnail: String
     length: Int
     modulesCount: Int
+    description: String
+    numberOfViews: Int
+    modules: [Module!]!
   }
 
   "Author of a complete Track"
@@ -20,6 +24,12 @@ const typeDef = gql`
     id: ID!
     name: String!
     photo: String
+  }
+
+  type Module {
+    id: ID!
+    title: String!
+    length: Int
   }
 `;
 
